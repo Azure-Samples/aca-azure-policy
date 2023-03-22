@@ -1,0 +1,325 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.15.31.15270",
+      "templateHash": "17240644772315618847"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the location of the deployment."
+      }
+    },
+    "policies": {
+      "type": "array",
+      "defaultValue": [
+        {
+          "name": "aca-insecure-connections",
+          "definition": "[json(variables('$fxv#0'))]",
+          "parameters": {
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-allowed-locations",
+          "definition": "[json(variables('$fxv#1'))]",
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "northeurope",
+                "westeurope",
+                "eastus2"
+              ]
+            },
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-allowed-container-registries",
+          "definition": "[json(variables('$fxv#2'))]",
+          "parameters": {
+            "listOfAllowedContainerRegistries": {
+              "value": [
+                "mcr.microsoft.com",
+                "docker.io",
+                "dapriosamples"
+              ]
+            },
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-allowed-ingress-target-ports",
+          "definition": "[json(variables('$fxv#3'))]",
+          "parameters": {
+            "listOfAllowedIngressTargetPorts": {
+              "value": [
+                443,
+                80
+              ]
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-allowed-ingress-transports",
+          "definition": "[json(variables('$fxv#4'))]",
+          "parameters": {
+            "listOfAllowedIngressTransports": {
+              "value": [
+                "http",
+                "http2",
+                "auto"
+              ]
+            },
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-replica-count",
+          "definition": "[json(variables('$fxv#5'))]",
+          "parameters": {
+            "minReplicas": {
+              "value": 0
+            },
+            "maxReplicas": {
+              "value": 30
+            },
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-no-liveness-probes",
+          "definition": "[json(variables('$fxv#6'))]",
+          "parameters": {
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-no-readiness-probes",
+          "definition": "[json(variables('$fxv#7'))]",
+          "parameters": {
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-no-startup-probes",
+          "definition": "[json(variables('$fxv#8'))]",
+          "parameters": {
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-required-cpu-and-memory",
+          "definition": "[json(variables('$fxv#9'))]",
+          "parameters": {
+            "maxCpu": {
+              "value": "1.0"
+            },
+            "maxMemory": {
+              "value": "2.5"
+            },
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-no-monitoring",
+          "definition": "[json(variables('$fxv#10'))]",
+          "parameters": {
+            "effect": {
+              "value": "Audit"
+            }
+          },
+          "identity": false
+        },
+        {
+          "name": "aca-no-diagnostic-settings",
+          "definition": "[json(variables('$fxv#11'))]",
+          "parameters": {
+            "logsEnabled": {
+              "value": true
+            },
+            "metricsEnabled": {
+              "value": true
+            },
+            "effect": {
+              "value": "AuditIfNotExists"
+            }
+          },
+          "identity": false
+        }
+      ],
+      "metadata": {
+        "description": "List of policy definitions"
+      }
+    }
+  },
+  "variables": {
+    "$fxv#0": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps should not allow insecure HTTP connections\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"Azure Container Apps should not allow insecure HTTP connections\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/containerApps/configuration.ingress.allowInsecure\",\r\n            \"equals\": \"true\"\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#1": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps allowed locations\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"This policy enables you to restrict the locations for Azure Container Apps.\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"listOfAllowedLocations\": {\r\n        \"type\": \"Array\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Allowed locations\",\r\n          \"description\": \"The list of locations that can be specified when deploying resources.\",\r\n          \"strongType\": \"location\"\r\n        },\r\n        \"defaultValue\": [\r\n          \"northeurope\",\r\n          \"westeurope\",\r\n          \"eastus2\"\r\n        ]\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"location\",\r\n            \"notIn\": \"[parameters('listOfAllowedLocations')]\"\r\n          },\r\n          {\r\n            \"field\": \"location\",\r\n            \"notEquals\": \"global\"\r\n          },\r\n          {\r\n            \"anyOf\": [{\r\n                \"field\": \"type\",\r\n                \"equals\": \"Microsoft.App/managedEnvironments\"\r\n              },\r\n              {\r\n                \"field\": \"type\",\r\n                \"equals\": \"Microsoft.App/containerApps\"\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#10": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps no monitoring configured\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"All\",\r\n    \"description\": \"Azure Container Apps no monitoring configured\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/managedEnvironments\"\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/managedEnvironments/appLogsConfiguration.destination\",\r\n            \"exists\": false\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#11": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps no diagnostic settings configured\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"All\",\r\n    \"description\": \"Azure Container Apps no diagnostic settings configured\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"logsEnabled\": {\r\n        \"type\": \"Boolean\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Logs Enabled\"\r\n        },\r\n        \"allowedValues\": [\r\n          true,\r\n          false\r\n        ],\r\n        \"defaultValue\": true\r\n      },\r\n      \"metricsEnabled\": {\r\n        \"type\": \"Boolean\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Metrics Enabled\"\r\n        },\r\n        \"allowedValues\": [\r\n          true,\r\n          false\r\n        ],\r\n        \"defaultValue\": true\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"AuditIfNotExists\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"AuditIfNotExists\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/managedEnvironments\"\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/managedEnvironments/appLogsConfiguration.destination\",\r\n            \"equals\": \"azure-monitor\"\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\",\r\n        \"details\": {\r\n          \"type\": \"Microsoft.Insights/diagnosticSettings\",\r\n          \"existenceCondition\": {\r\n            \"allOf\": [{\r\n                \"field\": \"Microsoft.Insights/diagnosticSettings/logs.enabled\",\r\n                \"equals\": \"[parameters('logsEnabled')]\"\r\n              },\r\n              {\r\n                \"field\": \"Microsoft.Insights/diagnosticSettings/metrics.enabled\",\r\n                \"equals\": \"[parameters('metricsEnabled')]\"\r\n              }\r\n            ]\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#2": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps allowed container registries\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"This policy enables you to restrict the list of container registries for Azure Container Apps.\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"listOfAllowedContainerRegistries\": {\r\n        \"type\": \"Array\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Allowed container registries\",\r\n          \"description\": \"The list of container registries that can be specified when deploying resources.\"\r\n        },\r\n        \"defaultValue\": [\r\n          \"mcr.microsoft.com\"\r\n        ]\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"count\": {\r\n              \"field\": \"Microsoft.App/containerApps/template.containers[*]\",\r\n              \"where\": {\r\n                \"value\": \"[split(first(field('Microsoft.App/containerApps/template.containers[*].image')), '/')[0]]\",\r\n                \"notIn\": \"[parameters('listOfAllowedContainerRegistries')]\"\r\n              }\r\n            },\r\n            \"greater\": 0\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#3": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps allowed ingress target ports\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"This policy enables you to restrict the list of ingress target ports for Azure Container Apps.\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"listOfAllowedIngressTargetPorts\": {\r\n        \"type\": \"Array\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Allowed container ports\",\r\n          \"description\": \"The list of container ports that can be specified when deploying resources.\"\r\n        },\r\n        \"defaultValue\": [\r\n          80,\r\n          443\r\n        ]\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/containerApps/configuration.ingress\",\r\n            \"exists\": true\r\n          },\r\n          {\r\n            \"not\": {\r\n              \"field\": \"Microsoft.App/containerApps/configuration.ingress\",\r\n              \"equals\": \"\"\r\n            }\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/containerApps/configuration.ingress.targetPort\",\r\n            \"notIn\": \"[parameters('listOfAllowedIngressTargetPorts')]\"\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#4": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps allowed ingress transports\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"This policy enables you to restrict the list of ingress transports for Azure Container Apps.\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"listOfAllowedIngressTransports\": {\r\n        \"type\": \"Array\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Allowed container transports\",\r\n          \"description\": \"The list of container transports that can be specified when deploying resources.\"\r\n        },\r\n        \"defaultValue\": [\r\n          80,\r\n          443\r\n        ]\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/containerApps/configuration.ingress\",\r\n            \"exists\": true\r\n          },\r\n          {\r\n            \"not\": {\r\n              \"field\": \"Microsoft.App/containerApps/configuration.ingress\",\r\n              \"equals\": \"\"\r\n            }\r\n          },\r\n          {\r\n            \"field\": \"Microsoft.App/containerApps/configuration.ingress.transport\",\r\n            \"notIn\": \"[parameters('listOfAllowedIngressTransports')]\"\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#5": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps container replica count limits\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"Azure Container Apps container replica count limits\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"minReplicas\": {\r\n        \"type\": \"integer\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Min allowed replicas\",\r\n          \"description\": \"Specifies the minimum number of container replicas for the Azure Container App\"\r\n        },\r\n        \"defaultValue\": 0\r\n      },\r\n      \"maxReplicas\": {\r\n        \"type\": \"integer\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Max allowed replicas\",\r\n          \"description\": \"Specifies the maximum number of container replicas for the Azure Container App\"\r\n        },\r\n        \"defaultValue\": 30\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"anyOf\": [{\r\n              \"field\": \"Microsoft.App/containerApps/template.scale.minReplicas\",\r\n              \"less\": \"[parameters('MinReplicas')]\"\r\n            }, {\r\n              \"field\": \"Microsoft.App/containerApps/template.scale.maxReplicas\",\r\n              \"greater\": \"[parameters('MaxReplicas')]\"\r\n            }]\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#6": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps no container liveness probes\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"Azure Container Apps no container liveness probes\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"count\": {\r\n              \"field\": \"Microsoft.App/containerApps/template.containers[*].probes[*]\",\r\n              \"where\": {\r\n                \"field\": \"Microsoft.App/containerApps/template.containers[*].probes[*].type\",\r\n                \"equals\": \"Liveness\"\r\n              }\r\n            },\r\n            \"equals\": 0\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#7": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps no container readiness probes\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"Azure Container Apps no container readiness probes\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"count\": {\r\n              \"field\": \"Microsoft.App/containerApps/template.containers[*].probes[*]\",\r\n              \"where\": {\r\n                \"field\": \"Microsoft.App/containerApps/template.containers[*].probes[*].type\",\r\n                \"equals\": \"Readiness\"\r\n              }\r\n            },\r\n            \"equals\": 0\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#8": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps no container startup probes\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"Azure Container Apps no container startup probes\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"count\": {\r\n              \"field\": \"Microsoft.App/containerApps/template.containers[*].probes[*]\",\r\n              \"where\": {\r\n                \"field\": \"Microsoft.App/containerApps/template.containers[*].probes[*].type\",\r\n                \"equals\": \"Startup\"\r\n              }\r\n            },\r\n            \"equals\": 0\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}",
+    "$fxv#9": "{\r\n  \"properties\": {\r\n    \"displayName\": \"Azure Container Apps container required CPU and memory\",\r\n    \"policyType\": \"Custom\",\r\n    \"mode\": \"Indexed\",\r\n    \"description\": \"Azure Container Apps container required CPU and memory\",\r\n    \"metadata\": {\r\n      \"version\": \"1.0.0\",\r\n      \"category\": \"Azure Container Apps\"\r\n    },\r\n    \"parameters\": {\r\n      \"maxCpu\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Max allowed CPU cores\",\r\n          \"description\": \"Specifies the maximum CPU cores allowed for a container. E.g. 1.25.\"\r\n        },\r\n        \"defaultValue\": \"2.0\"\r\n      },\r\n      \"maxMemory\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Max allowed memory in Gi\",\r\n          \"description\": \"Specifies the maximum memory in Gi allowed for a container. E.g. 2.5\"\r\n        },\r\n        \"defaultValue\": \"4.0\"\r\n      },\r\n      \"effect\": {\r\n        \"type\": \"String\",\r\n        \"metadata\": {\r\n          \"displayName\": \"Effect\",\r\n          \"description\": \"Enable or disable the execution of the policy\"\r\n        },\r\n        \"allowedValues\": [\r\n          \"Audit\",\r\n          \"Deny\",\r\n          \"Disabled\"\r\n        ],\r\n        \"defaultValue\": \"Audit\"\r\n      }\r\n    },\r\n    \"policyRule\": {\r\n      \"if\": {\r\n        \"allOf\": [{\r\n            \"field\": \"type\",\r\n            \"equals\": \"Microsoft.App/containerApps\"\r\n          },\r\n          {\r\n            \"anyOf\": [{\r\n                \"count\": {\r\n                  \"field\": \"Microsoft.App/containerApps/template.containers[*]\",\r\n                  \"where\": {\r\n                    \"field\": \"Microsoft.App/containerApps/template.containers[*].resources.cpu\",\r\n                    \"greater\": \"[float(parameters('maxCpu'))]\"\r\n                  }\r\n                },\r\n                \"greater\": 0\r\n              },\r\n              {\r\n                \"count\": {\r\n                  \"field\": \"Microsoft.App/containerApps/template.containers[*]\",\r\n                  \"where\": {\r\n                    \"value\": \"[float(substring(first(field('Microsoft.App/containerApps/template.containers[*].resources.memory')), 0, sub(length(first(field('Microsoft.App/containerApps/template.containers[*].resources.memory'))), 2)))]\",\r\n                    \"greater\": \"[float(parameters('maxMemory'))]\"\r\n                  }\r\n                },\r\n                \"greater\": 0\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      },\r\n      \"then\": {\r\n        \"effect\": \"[parameters('effect')]\"\r\n      }\r\n    }\r\n  }\r\n}"
+  },
+  "resources": [
+    {
+      "copy": {
+        "name": "policyDefinition",
+        "count": "[length(parameters('policies'))]"
+      },
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2021-06-01",
+      "name": "[guid(parameters('policies')[copyIndex()].name)]",
+      "properties": {
+        "description": "[parameters('policies')[copyIndex()].definition.properties.description]",
+        "displayName": "[parameters('policies')[copyIndex()].definition.properties.displayName]",
+        "metadata": "[parameters('policies')[copyIndex()].definition.properties.metadata]",
+        "mode": "[parameters('policies')[copyIndex()].definition.properties.mode]",
+        "parameters": "[parameters('policies')[copyIndex()].definition.properties.parameters]",
+        "policyType": "[parameters('policies')[copyIndex()].definition.properties.policyType]",
+        "policyRule": "[parameters('policies')[copyIndex()].definition.properties.policyRule]"
+      }
+    },
+    {
+      "copy": {
+        "name": "policyAssignment",
+        "count": "[length(parameters('policies'))]"
+      },
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('poAssign_{0}', take(parameters('policies')[copyIndex()].name, 40))]",
+      "location": "[deployment().location]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "policy": {
+            "value": "[parameters('policies')[copyIndex()]]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "policyDefinitionId": {
+            "value": "[subscriptionResourceId('Microsoft.Authorization/policyDefinitions', guid(parameters('policies')[copyIndex()].name))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.15.31.15270",
+              "templateHash": "16251789177215661824"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "Specifies the location of the deployment."
+              }
+            },
+            "policy": {
+              "type": "object",
+              "metadata": {
+                "description": "Specifies the policy definition to assign."
+              }
+            },
+            "policyDefinitionId": {
+              "type": "string",
+              "metadata": {
+                "description": "Specifies the resource id of the policy definition to assign."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Authorization/policyAssignments",
+              "apiVersion": "2022-06-01",
+              "name": "[uniqueString(format('{0}', parameters('policy').name))]",
+              "location": "[parameters('location')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "description": "[parameters('policy').definition.properties.description]",
+                "displayName": "[parameters('policy').definition.properties.displayName]",
+                "policyDefinitionId": "[parameters('policyDefinitionId')]",
+                "parameters": "[parameters('policy').parameters]"
+              }
+            },
+            {
+              "condition": "[parameters('policy').identity]",
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "name": "[guid(format('{0}', parameters('policy').name))]",
+              "properties": {
+                "roleDefinitionId": "[parameters('policy').policyDefinition.properties.policyRule.then.details.roleDefinitionIds[0]]",
+                "principalId": "[reference(subscriptionResourceId('Microsoft.Authorization/policyAssignments', uniqueString(format('{0}', parameters('policy').name))), '2022-06-01', 'full').identity.principalId]",
+                "principalType": "ServicePrincipal"
+              },
+              "dependsOn": [
+                "[subscriptionResourceId('Microsoft.Authorization/policyAssignments', uniqueString(format('{0}', parameters('policy').name)))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "policyAssignmentId": {
+              "type": "string",
+              "value": "[subscriptionResourceId('Microsoft.Authorization/policyAssignments', uniqueString(format('{0}', parameters('policy').name)))]"
+            },
+            "principalId": {
+              "type": "string",
+              "value": "[reference(subscriptionResourceId('Microsoft.Authorization/policyAssignments', uniqueString(format('{0}', parameters('policy').name))), '2022-06-01', 'full').identity.principalId]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "policyDefinition"
+      ]
+    }
+  ]
+}
