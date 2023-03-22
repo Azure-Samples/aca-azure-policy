@@ -27,7 +27,7 @@ azureDeploy: "https://raw.githubusercontent.com/Azure-Samples/aca-azure-policy/m
 This repository contains [Azure Policy](https://learn.microsoft.com/en-us/azure/governance/policy/overview) custom definitions for [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview). Any contribution is more than welcome. Feel free to submit a pull request to add or update custom policy definitions.
 
 <p align="center">
-  <img src="./images/logo.png">
+  <img width="600"src="./images/logo.png">
 </p>
 
 ## Azure Governance
