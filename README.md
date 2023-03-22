@@ -26,6 +26,10 @@ azureDeploy: "https://raw.githubusercontent.com/Azure-Samples/aca-azure-policy/m
 
 This repository contains [Azure Policy](https://learn.microsoft.com/en-us/azure/governance/policy/overview) custom definitions for [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview). Any contribution is more than welcome. Feel free to submit a pull request to add or update custom policy definitions.
 
+<p align="center">
+  <img src="./images/logo.png">
+</p>
+
 ## Azure Governance
 
 [Azure Governance](https://learn.microsoft.com/en-us/azure/governance/) is a set of mechanisms, services, and processes that allow users to maintain control over their applications and resources in Microsoft Azure. For more information, see [What are the Azure Management areas?](https://learn.microsoft.com/en-us/azure/governance/azure-management). Azure Governance is designed to help organizations plan their initiatives, set strategic priorities, and manage their resources effectively. It provides a centralized way to manage policies, compliance, and security across all Azure services. For more information, see the [Standard enterprise governance guide](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/govern/guides/standard/) and [Governance guide for complex enterprises](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/govern/guides/complex/) under the documentation for the [Microsoft Cloud Adoption Framework for Azure](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/overview).
@@ -423,7 +427,7 @@ Proceed as follows to verify that the custom policy definitions were successfull
 
 ![Policy Assignments under the Azure Portal](images/policy-assignments.png)
 
-## Custom Policy
+## Custom Policy Definition
 
 As an example, the following table contains the definition of the `Azure Container Apps allowed container registries` custom policy that enables you to restrict the list of container registries for [Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/overview).
 
