@@ -493,7 +493,7 @@ If you open the `Azure Container Apps allowed container registries` policy assig
 
 ![Policy Assignment under the Azure Portal](images/policy-assignment.png)
 
-If you click `View Compliance` you can see a pie chart that indicates the number of compliant and non-compliant Azure Container Apps. The compliance state describes a resource's adherence to applicable policies. Can be compliant, non-compliant, exempt, conflict, not started, or protected. If you select `Non-compliant` from the drop-down list, you can see the list of the Azure Container Apps that do not use container images from the list of allowed registries and how many Azure Container, as shown in the following picture:
+If you click `View Compliance` you can see a pie chart that indicates the number of compliant and non-compliant Azure Container Apps. The compliance state describes a resource's adherence to applicable policies. The state can be compliant, non-compliant, exempt, conflict, not started, or protected. If you select `Non-compliant` from the drop-down list, you can see the list of the Azure Container Apps that do not use container images from the list of allowed registries, as shown in the following picture:
 
 ![Policy Assignment Compliance under the Azure Portal](images/policy-compliance.png)
 
@@ -501,7 +501,7 @@ If you click the `Details` link of a compliant or non-compliant resource, you ca
 
 ![Policy Assignment Compliance Details under the Azure Portal](images/non-compliant.png)
 
-For more information about compliance, see [Get compliance data of Azure resources](https://learn.microsoft.com/en-us/azure/governance/policy/how-to/get-compliance-data).
+For more information about Azure Policy compliance, see [Get compliance data of Azure resources](https://learn.microsoft.com/en-us/azure/governance/policy/how-to/get-compliance-data).
 
 ## Conclusion
 
